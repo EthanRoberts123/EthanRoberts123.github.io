@@ -1,1 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS Portfolio | Geospatial Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --primary-dark: #134e4a;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --border: rgba(148, 163, 184, 0.1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(2, 6, 23, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-light);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-light);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .hero-bg-map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(20, 184, 166, 0.1);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            color: var(--primary-light);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary-light);
+            position: relative;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(20, 184, 166, 0.2);
+            z-index: -1;
+            transform: skewX(-12deg);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 20px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(20, 184, 166, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator i {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-header h2 i {
+            color: var(--primary-light);
+            font-size: 1.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 2rem;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-image-wrapper i {
+            font-size: 8rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .about-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .about-content p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            border-color: var(--primary-light);
+            transform: translateX(4px);
+        }
+
+        .skill-item i {
+            color: var(--primary-light);
+            font-size: 1.1rem;
+        }
+
+        .skill-item span {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            position: relative;
+        }
+
+        .projects-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-light);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--dark));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-overlay a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .project-overlay a:hover {
+            background: var(--primary-light);
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background: rgba(20, 184, 166, 0.1);
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .project-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--light);
+        }
+
+        .project-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Interactive Map Section */
+        .map-section {
+            position: relative;
+        }
+
+        .map-container {
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .map-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .map-info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .map-info-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-4px);
+        }
+
+        .map-info-card i {
+            font-size: 2rem;
+            color: var(--primary-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .map-info-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-info-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-light), var(--primary-dark));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 3rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 3px solid var(--dark);
+            transform: translateX(-5px);
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--primary-light);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-content h4 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .timeline-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .timeline-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background: rgba(20, 184, 166, 0.1);
+            color: var(--primary-light);
+        }
+
+        /* Contact / CTA Section */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-dark), var(--dark));
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--dark);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-accent:hover {
+            background: #fbbf24;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-text a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Intersection Observer Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--dark);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                gap: 1rem;
+                border-top: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-info {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons,
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Leaflet Custom Styles */
+        .leaflet-popup-content-wrapper {
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .leaflet-popup-tip {
+            background: var(--card-bg);
+        }
+
+        .leaflet-popup-content {
+            margin: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .leaflet-popup-content h3 {
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .leaflet-container a {
+            color: var(--primary-light);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-globe-americas"></i>
+                <span>GIS_PORTFOLIO</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" class="active">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#map">Map</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg-map" id="heroMap"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-satellite"></i>
+                Geospatial Developer & Analyst
+            </div>
+            <h1>
+                Mapping the World<br>
+                Through <span class="highlight">Data & Code</span>
+            </h1>
+            <p class="hero-subtitle">
+                Specializing in spatial analysis, remote sensing, and interactive web mapping solutions
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="8">0</div>
+                    <div class="stat-label">Years Exp</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="12">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <i class="fas fa-folder-open"></i>
+                    View Projects
+                </a>
+                <a href="assets/cv.pdf" class="btn btn-outline" download>
+                    <i class="fas fa-download"></i>
+                    Download CV
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="animate-on-scroll">
+        <div class="section-header">
+            <h2><i class="fas fa-user"></i> About Me</h2>
+            <p>Geospatial professional with expertise in spatial data science and web mapping</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-image">
+                <div class="about-image-wrapper">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+            </div>
+            <div class="about-content">
+                <h3>Turning Spatial Data Into Insights</h3>
+                <p>
+                    I'm a passionate GIS developer with over 8 years of experience working with spatial data, 
+                    remote sensing, and geospatial web technologies. I specialize in building interactive mapping 
+                    applications, conducting spatial analysis, and creating automated geoprocessing workflows.
+                </p>
+                <p>
+                    My work spans environmental monitoring, urban planning, and transportation analysis. 
+                    I enjoy combining open-source GIS tools with modern web technologies to create powerful 
+                    spatial solutions.
+                </p>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fas fa-globe"></i>
+                        <span>ArcGIS / QGIS</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-code"></i>
+                        <span>Python / R</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-layer-group"></i>
+                        <span>PostGIS / SQL</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-satellite-dish"></i>
+                        <span>Remote Sensing</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-js"></i>
+                        <span>JavaScript / D3</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-cube"></i>
+                        <span>3D GIS / Cesium</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-brain"></i>
+                        <span>Machine Learning</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-server"></i>
+                        <span>GeoServer / MapServer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section animate-on-scroll">
+        <div class="section-header">
+            <h2><i class="fas fa-project-diagram"></i> Featured Projects</h2>
+            <p>A selection of my recent geospatial work and research</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-image">
+                    <i class="fas fa-city"></i>
+                    <div class="project-overlay">
+                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">Leaflet</span>
+                        <span class="project-tag">PostGIS</span>
+                    </div>
+                    <h3>Urban Heat Island Analyzer</h3>
+                    <p>Interactive web application analyzing urban heat island effects using Landsat thermal imagery and spatial statistics.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <i class="fas fa-water"></i>
+                    <div class="project-overlay">
+                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">GDAL</span>
+                        <span class="project-tag">D3.js</span>
+                    </div>
+                    <h3>Flood Risk Assessment System</h3>
+                    <p>Automated flood risk mapping system processing DEM data, hydrological models, and real-time weather feeds.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <i class="fas fa-tree"></i>
+                    <div class="project-overlay">
+                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">TensorFlow</span>
+                        <span class="project-tag">Sentinel-2</span>
+                        <span class="project-tag">GeoTIFF</span>
+                    </div>
+                    <h3>Forest Cover Change Detection</h3>
+                    <p>Deep learning model for automated deforestation monitoring using Sentinel-2 satellite imagery time series.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <i class="fas fa-route"></i>
+                    <div class="project-overlay">
+                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">OSRM</span>
+                        <span class="project-tag">Mapbox</span>
+                        <span class="project-tag">Vue.js</span>
+                    </div>
+                    <h3>Optimal Routing Dashboard</h3>
+                    <p>Multi-criteria route optimization platform for logistics with real-time traffic and emission calculations.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <i class="fas fa-wind"></i>
+                    <div class="project-overlay">
+                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">GRASS GIS</span>
+                        <span class="project-tag">R</span>
+                        <span class="project-tag">Shiny</span>
+                    </div>
+                    <h3>Air Quality Monitoring Network</h3>
+                    <p>Spatial interpolation and visualization of PM2.5 data from sensor networks across metropolitan areas.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <i class="fas fa-mountain"></i>
+                    <div class="project-overlay">
+                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">CesiumJS</span>
+                        <span class="project-tag">Three.js</span>
+                        <span class="project-tag">LiDAR</span>
+                    </div>
+                    <h3>3D Terrain Visualization</h3>
+                    <p>Interactive 3D terrain viewer with LiDAR point cloud rendering and slope analysis tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Map Section -->
+    <section id="map" class="map-section animate-on-scroll">
+        <div class="section-header">
+            <h2><i class="fas fa-map"></i> Project Locations</h2>
+            <p>Interactive map showcasing the geographic scope of my work</p>
+        </div>
+        <div class="map-container" id="projectMap"></div>
+        <div class="map-info">
+            <div class="map-info-card">
+                <i class="fas fa-globe-americas"></i>
+                <h4>Global Coverage</h4>
+                <p>Projects spanning 12 countries across 4 continents</p>
+            </div>
+            <div class="map-info-card">
+                <i class="fas fa-database"></i>
+                <h4>Data Sources</h4>
+                <p>Landsat, Sentinel, OpenStreetMap, and custom surveys</p>
+            </div>
+            <div class="map-info-card">
+                <i class="fas fa-cogs"></i>
+                <h4>Technologies</h4>
+                <p>Open-source GIS stack with modern web frameworks</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="animate-on-scroll">
+        <div class="section-header">
+            <h2><i class="fas fa-briefcase"></i> Experience</h2>
+            <p>My professional journey in the geospatial industry</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2022 - Present</div>
+                    <h3>Senior Geospatial Developer</h3>
+                    <h4>GeoTech Solutions Inc.</h4>
+                    <p>Leading development of enterprise GIS platforms and spatial data pipelines. Managing cloud-based geoprocessing infrastructure and mentoring junior developers.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">AWS</span>
+                        <span class="timeline-tag">Docker</span>
+                        <span class="timeline-tag">ArcPy</span>
+                        <span class="timeline-tag">React</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2019 - 2022</div>
+                    <h3>GIS Analyst</h3>
+                    <h4>Environmental Research Institute</h4>
+                    <p>Conducted spatial analysis for environmental impact assessments. Developed automated workflows for satellite imagery processing and change detection.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">GDAL</span>
+                        <span class="timeline-tag">QGIS</span>
+                        <span class="timeline-tag">R</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2017 - 2019</div>
+                    <h3>Junior GIS Specialist</h3>
+                    <h4>Urban Planning Department</h4>
+                    <p>Supported urban planning projects with spatial analysis and cartographic production. Maintained enterprise geodatabases and web mapping services.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">ArcGIS</span>
+                        <span class="timeline-tag">PostGIS</span>
+                        <span class="timeline-tag">Mapbox</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2015 - 2017</div>
+                    <h3>GIS Intern</h3>
+                    <h4>Natural Resources Agency</h4>
+                    <p>Assisted with field data collection, GPS surveys, and basic spatial analysis. Contributed to habitat mapping and conservation planning projects.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">GPS</span>
+                        <span class="timeline-tag">Surveying</span>
+                        <span class="timeline-tag">Cartography</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / CTA Section -->
+    <section id="contact" class="animate-on-scroll">
+        <div class="cta-section">
+            <div class="cta-content">
+                <h2>Let's Build Something Spatial</h2>
+                <p>Interested in collaborating on geospatial projects or discussing spatial data solutions?</p>
+                <div class="cta-buttons">
+                    <a href="mailto:your.email@example.com" class="btn btn-primary btn-large">
+                        <i class="fas fa-envelope"></i>
+                        Get In Touch
+                    </a>
+                    <a href="assets/cv.pdf" class="btn btn-accent btn-large" download>
+                        <i class="fas fa-file-download"></i>
+                        Download CV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p class="footer-text">
+                Built with <i class="fas fa-heart" style="color: var(--primary-light);"></i> using Leaflet, Font Awesome & vanilla JS. 
+                Hosted on <a href="https://pages.github.com">GitHub Pages</a>.
+            </p>
+            <p class="footer-text" style="margin-top: 0.5rem; font-size: 0.8rem;">
+                © 2024 GIS Portfolio. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Active Navigation Link
+        const sections = document.querySelectorAll('section[id]');
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinksItems.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter Animation
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-count'));
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+
+                        const updateCounter = () => {
+                            current += step;
+                            if (current < target) {
+                                counter.textContent = Math.floor(current);
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target + '+';
+                            }
+                        };
+                        updateCounter();
+                    });
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const statsSection = document.querySelector('.hero-stats');
+        if (statsSection) {
+            counterObserver.observe(statsSection.parentElement);
+        }
+
+        // Initialize Hero Background Map (Subtle)
+        const heroMap = L.map('heroMap', {
+            zoomControl: false,
+            attributionControl: false,
+            dragging: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false
+        }).setView([20, 0], 2);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        }).addTo(heroMap);
+
+        // Initialize Project Map
+        const projectMap = L.map('projectMap').setView([25, 10], 2);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(projectMap);
+
+        // Project Locations
+        const locations = [
+            { lat: 40.7128, lng: -74.0060, title: 'New York, USA', desc: 'Urban Heat Island Analysis' },
+            { lat: 51.5074, lng: -0.1278, title: 'London, UK', desc: 'Flood Risk Assessment' },
+            { lat: -3.4653, lng: -62.2159, title: 'Amazon, Brazil', desc: 'Forest Cover Monitoring' },
+            { lat: 35.6762, lng: 139.6503, title: 'Tokyo, Japan', desc: 'Air Quality Network' },
+            { lat: 1.3521, lng: 103.8198, title: 'Singapore', desc: 'Optimal Routing System' },
+            { lat: 46.8182, lng: 8.2275, title: 'Swiss Alps', desc: '3D Terrain Visualization' }
+        ];
+
+        const customIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background: #14b8a6; width: 16px; height: 16px; border-radius: 50%; border: 3px solid #0f172a; box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);"></div>',
+            iconSize: [16, 16],
+            iconAnchor: [8, 8]
+        });
+
+        locations.forEach(loc => {
+            const marker = L.marker([loc.lat, loc.lng], { icon: customIcon }).addTo(projectMap);
+            marker.bindPopup(`
+                <h3>${loc.title}</h3>
+                <p>${loc.desc}</p>
+            `);
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
