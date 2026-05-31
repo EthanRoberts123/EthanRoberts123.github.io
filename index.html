@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GIS Portfolio | Geospatial Developer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -434,7 +432,7 @@
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
@@ -906,32 +904,9 @@
             }
         }
 
-        /* Leaflet Custom Styles */
-        .leaflet-popup-content-wrapper {
-            background: var(--card-bg);
-            color: var(--text);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .leaflet-popup-tip {
-            background: var(--card-bg);
-        }
-
-        .leaflet-popup-content {
-            margin: 1rem;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .leaflet-popup-content h3 {
-            color: var(--primary-light);
-            margin-bottom: 0.5rem;
-        }
-
-        .leaflet-container a {
-            color: var(--primary-light);
-        }
+        
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -940,36 +915,32 @@
     <nav id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
-                <i class="fas fa-globe-americas"></i>
                 <span>GIS_PORTFOLIO</span>
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about" class="active">About</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#map">Map</a></li>
                 <li><a href="#experience">Experience</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#reflective">Reflection</a></li>
             </ul>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
+                Menu
             </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-bg-map" id="heroMap"></div>
         <div class="hero-content">
             <div class="hero-badge">
-                <i class="fas fa-satellite"></i>
                 Geospatial Developer & Analyst
             </div>
             <h1>
-                Mapping the World<br>
-                Through <span class="highlight">Data & Code</span>
+                [Your Name]<br>
+                <span class="highlight">GIS & Remote Sensing Specialist</span>
             </h1>
             <p class="hero-subtitle">
-                Specializing in spatial analysis, remote sensing, and spatial data science
+                [Your current role or tagline - e.g., "PhD Candidate in Geospatial Sciences | Remote Sensing | Machine Learning | Environmental Monitoring"]
             </p>
             <div class="hero-stats">
                 <div class="stat-item">
@@ -987,30 +958,28 @@
             </div>
             <div class="hero-buttons">
                 <a href="#projects" class="btn btn-primary">
-                    <i class="fas fa-folder-open"></i>
                     View Projects
                 </a>
                 <a href="assets/cv.pdf" class="btn btn-outline" download>
-                    <i class="fas fa-download"></i>
                     Download CV
                 </a>
             </div>
         </div>
         <div class="scroll-indicator">
-            <i class="fas fa-chevron-down"></i>
+            <span style="color: var(--text-muted); font-size: 1.5rem;">↓</span>
         </div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="animate-on-scroll">
         <div class="section-header">
-            <h2><i class="fas fa-user"></i> About Me</h2>
+            <h2>About Me</h2>
             <p>Geospatial professional with expertise in spatial data science and web mapping</p>
         </div>
         <div class="about-grid">
             <div class="about-image">
                 <div class="about-image-wrapper">
-                    <i class="fas fa-map-marked-alt"></i>
+                    <span style="font-size: 3rem; color: rgba(255, 255, 255, 0.3); font-weight: 700;">GIS</span>
                 </div>
             </div>
             <div class="about-content">
@@ -1027,35 +996,27 @@
                 </p>
                 <div class="skills-grid">
                     <div class="skill-item">
-                        <i class="fas fa-globe"></i>
                         <span>ArcGIS / QGIS</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fas fa-code"></i>
                         <span>Python / R</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fas fa-layer-group"></i>
                         <span>PostGIS / SQL</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fas fa-satellite-dish"></i>
                         <span>Remote Sensing</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fab fa-js"></i>
                         <span>JavaScript / D3</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fas fa-cube"></i>
                         <span>3D GIS / Cesium</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fas fa-brain"></i>
                         <span>Machine Learning</span>
                     </div>
                     <div class="skill-item">
-                        <i class="fas fa-server"></i>
                         <span>GeoServer / MapServer</span>
                     </div>
                 </div>
@@ -1066,15 +1027,15 @@
     <!-- Projects Section -->
     <section id="projects" class="projects-section animate-on-scroll">
         <div class="section-header">
-            <h2><i class="fas fa-project-diagram"></i> Featured Projects</h2>
+            <h2>Featured Projects</h2>
             <p>A selection of my recent geospatial work and research</p>
         </div>
         <div class="projects-grid">
             <div class="project-card">
                 <div class="project-image" style="background: url('OIL_SAR2.jpg')center/cover no-repeat;">
                     <div class="project-overlay">
-                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                        <a href="#" title="View Live">View</a>
+                        <a href="#" title="View Code">Code</a>
                     </div>
                 </div>
                 <div class="project-content">
@@ -1082,6 +1043,7 @@
                         <span class="project-tag">JS</span>
                         <span class="project-tag">GEE</span>
                         <span class="project-tag">SAR</span>
+                        <span class="project-tag">Sentinel-1</span>
                     </div>
                     <h3>GEE Time Series & Change Detection Analysis</h3>
                     <p>Results and presentation of my time series and change analysis of an oil spill on the coast of Tobago.</p>
@@ -1091,8 +1053,8 @@
             <div class="project-card">
                 <div class="project-image" style="background: url('wine_cultivar2.jpg')center/cover no-repeat;">
                     <div class="project-overlay">
-                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                        <a href="#" title="View Live">View</a>
+                        <a href="#" title="View Code">Code</a>
                     </div>
                 </div>
                 <div class="project-content">
@@ -1108,8 +1070,8 @@
             <div class="project-card">
                 <div class="project-image">
                     <div class="project-overlay">
-                        <a href="#" title="View Live"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#" title="View Code"><i class="fab fa-github"></i></a>
+                        <a href="#" title="View Live">View</a>
+                        <a href="#" title="View Code">Code</a>
                     </div>
                 </div>
                 <div class="project-content">
@@ -1122,37 +1084,12 @@
                     <p>Deep learning model for automated deforestation monitoring using Sentinel-2 satellite imagery time series.</p>
                 </div>
             </div>
-
-    <!-- Interactive Map Section -->
-    <section id="map" class="map-section animate-on-scroll">
-        <div class="section-header">
-            <h2><i class="fas fa-map"></i> Project Locations</h2>
-            <p>Interactive map showcasing the geographic scope of my work</p>
-        </div>
-        <div class="map-container" id="projectMap"></div>
-        <div class="map-info">
-            <div class="map-info-card">
-                <i class="fas fa-globe-americas"></i>
-                <h4>Global Coverage</h4>
-                <p>Projects spanning 12 countries across 4 continents</p>
-            </div>
-            <div class="map-info-card">
-                <i class="fas fa-database"></i>
-                <h4>Data Sources</h4>
-                <p>Landsat, Sentinel, OpenStreetMap, and custom surveys</p>
-            </div>
-            <div class="map-info-card">
-                <i class="fas fa-cogs"></i>
-                <h4>Technologies</h4>
-                <p>Open-source GIS stack with modern web frameworks</p>
-            </div>
-        </div>
     </section>
 
     <!-- Experience Section -->
     <section id="experience" class="animate-on-scroll">
         <div class="section-header">
-            <h2><i class="fas fa-briefcase"></i> Experience</h2>
+            <h2>Experience</h2>
             <p>My professional journey in the geospatial industry</p>
         </div>
         <div class="timeline">
@@ -1213,22 +1150,47 @@
         </div>
     </section>
 
-    <!-- Contact / CTA Section -->
-    <section id="contact" class="animate-on-scroll">
-        <div class="cta-section">
-            <div class="cta-content">
-                <h2>Let's Build Something Spatial</h2>
-                <p>Interested in collaborating on geospatial projects or discussing spatial data solutions?</p>
-                <div class="cta-buttons">
-                    <a href="mailto:your.email@example.com" class="btn btn-primary btn-large">
-                        <i class="fas fa-envelope"></i>
-                        Get In Touch
-                    </a>
-                    <a href="assets/cv.pdf" class="btn btn-accent btn-large" download>
-                        <i class="fas fa-file-download"></i>
-                        Download CV
-                    </a>
-                </div>
+    <!-- Reflective Commentary Section -->
+    <section id="reflective" class="animate-on-scroll">
+        <div class="section-header">
+            <h2>Reflective Commentary</h2>
+            <p>Thoughts on my journey, challenges faced, and lessons learned</p>
+        </div>
+        <div class="reflective-content" style="max-width: 800px; margin: 0 auto;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;">
+                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.25rem;">On My Growth as a Geospatial Professional</h3>
+                <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem;">
+                    [Write about how you started in GIS, what drew you to the field, and how your skills have evolved over time. 
+                    Discuss key turning points in your career and what you've learned from each role.]
+                </p>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    [Reflect on specific projects that challenged you and how you overcame those challenges. 
+                    Mention any mentors or collaborations that shaped your approach.]
+                </p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;">
+                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.25rem;">Technical Challenges & Problem-Solving</h3>
+                <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem;">
+                    [Discuss a particularly difficult technical problem you solved - perhaps processing large datasets, 
+                    integrating multiple data sources, or optimizing a workflow. Explain your thought process and the solution.]
+                </p>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    [Talk about how you stay current with rapidly evolving geospatial technologies and what emerging 
+                    tools or methods excite you most.]
+                </p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem;">
+                <h3 style="color: var(--primary-light); margin-bottom: 1rem; font-size: 1.25rem;">Looking Forward</h3>
+                <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem;">
+                    [Share your vision for where you want to take your career. What areas of geospatial science 
+                    do you want to explore further? What impact do you hope to make?]
+                </p>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    [End with a personal note about what drives your passion for geospatial work and any advice 
+                    you'd give to someone starting in the field.]
+                </p>
             </div>
         </div>
     </section>
@@ -1237,13 +1199,10 @@
     <footer>
         <div class="footer-content">
             <div class="social-links">
-                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
-                <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="https://linkedin.com/in/yourprofile" title="LinkedIn" target="_blank">LinkedIn</a>
             </div>
             <p class="footer-text">
-                Built with <i class="fas fa-heart" style="color: var(--primary-light);"></i> using Leaflet, Font Awesome & vanilla JS. 
+                Built with vanilla JS. 
                 Hosted on <a href="https://pages.github.com">GitHub Pages</a>.
             </p>
             <p class="footer-text" style="margin-top: 0.5rem; font-size: 0.8rem;">
@@ -1252,7 +1211,6 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1344,53 +1302,7 @@
             counterObserver.observe(statsSection.parentElement);
         }
 
-        // Initialize Hero Background Map (Subtle)
-        const heroMap = L.map('heroMap', {
-            zoomControl: false,
-            attributionControl: false,
-            dragging: false,
-            scrollWheelZoom: false,
-            doubleClickZoom: false,
-            boxZoom: false
-        }).setView([20, 0], 2);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19
-        }).addTo(heroMap);
-
-        // Initialize Project Map
-        const projectMap = L.map('projectMap').setView([25, 10], 2);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 19
-        }).addTo(projectMap);
-
-        // Project Locations
-        const locations = [
-            { lat: 40.7128, lng: -74.0060, title: 'New York, USA', desc: 'Urban Heat Island Analysis' },
-            { lat: 51.5074, lng: -0.1278, title: 'London, UK', desc: 'Flood Risk Assessment' },
-            { lat: -3.4653, lng: -62.2159, title: 'Amazon, Brazil', desc: 'Forest Cover Monitoring' },
-            { lat: 35.6762, lng: 139.6503, title: 'Tokyo, Japan', desc: 'Air Quality Network' },
-            { lat: 1.3521, lng: 103.8198, title: 'Singapore', desc: 'Optimal Routing System' },
-            { lat: 46.8182, lng: 8.2275, title: 'Swiss Alps', desc: '3D Terrain Visualization' }
-        ];
-
-        const customIcon = L.divIcon({
-            className: 'custom-marker',
-            html: '<div style="background: #14b8a6; width: 16px; height: 16px; border-radius: 50%; border: 3px solid #0f172a; box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);"></div>',
-            iconSize: [16, 16],
-            iconAnchor: [8, 8]
-        });
-
-        locations.forEach(loc => {
-            const marker = L.marker([loc.lat, loc.lng], { icon: customIcon }).addTo(projectMap);
-            marker.bindPopup(`
-                <h3>${loc.title}</h3>
-                <p>${loc.desc}</p>
-            `);
-        });
+        
 
         // Close mobile menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
